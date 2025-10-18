@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx tsc -b && node ./dist/index.js"
+    "build": "tsc -b",
+    "dev": "npx prisma migrate dev && node dist/index.js"
   },
   "keywords": [],
   "author": "",

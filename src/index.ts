@@ -14,9 +14,9 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
   await prismaClient.users.create({ // ✅ Capital U
     data: {
-
       username: Math.random().toString(36).substring(7),
       password: Math.random().toString(36).substring(7),
+      department: "IT",
     },
   });
   res.json({ message: "User created successfully" });

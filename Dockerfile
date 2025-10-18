@@ -10,6 +10,8 @@ RUN npm install
 
 COPY prisma ./prisma
 
+# Copy the rest of the app
+COPY . .
 
 
 # 🔥 Make sure to copy the Prisma schema folder
@@ -19,12 +21,9 @@ COPY prisma ./prisma
 ENV DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/postgres
 RUN echo $DATABASE_URL
 
-# Run Prisma commands
-RUN npx prisma migrate dev
 RUN npx prisma generate
+RUN npm run build
 
-# Copy the rest of the app
-COPY . .
 
 EXPOSE 3000
 
