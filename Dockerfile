@@ -1,19 +1,32 @@
-from node:20-alpine
+FROM node:20-alpine
+
 WORKDIR /app
-COPY package.json ./package.json
-copy package-lock.json ./package-lock.json
+
+# Copy only what you need to install dependencies first (good for caching)
+COPY package.json .
+COPY package-lock.json .
 
 RUN npm install
-COPY . .
+
+COPY prisma ./prisma
 
 
-ENV DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:5432/postgres"
 
+# 🔥 Make sure to copy the Prisma schema folder
+
+
+# Set env vars for Prisma
+ENV DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/postgres
+RUN echo $DATABASE_URL
+
+# Run Prisma commands
 RUN npx prisma migrate dev
 RUN npx prisma generate
-RUN npx run build
+
+# Copy the rest of the app
+COPY . .
 
 EXPOSE 3000
 
-cmd ["npm","run","dev"]
-
+# Correct CMD
+CMD ["npm", "run", "dev"]
